@@ -1,4 +1,4 @@
 # URL_Shortener
 App which shortens urls
 
-Skeleton
+Hashing class added, context repaired.
