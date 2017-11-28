@@ -23,7 +23,7 @@ namespace URLShortener.Helpers
                 }
                 string text = sb.ToString();
                 string firstEightChar = text.Substring(0, 8);
-                return firstEightChar;
+                return firstEightChar.Insert(4, "-");
             }
         }
     }

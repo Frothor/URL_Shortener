@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Root>
-  <ConnectionString>Data Source=localhost;Initial Catalog=URLShortenerDb;Integrated Security=True</ConnectionString>
+  <ConnectionString>Data Source=.\SQLEXPRESS;Initial Catalog=URLShortenerDb;Integrated Security=True</ConnectionString>
 </Root>

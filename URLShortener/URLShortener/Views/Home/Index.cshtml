@@ -1,7 +1,15 @@
 ﻿@model URLShortener.Models.Link
 Index
-
-@using (Html.BeginForm("Result", "Home", FormMethod.Post))
- {
-
- }
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+<div class="container">
+    @using (Html.BeginForm("Result", "Home", FormMethod.Post))
+    {
+        <div class="form-group row">
+            @Html.LabelFor(x => x.Long, new { @class = "col-form-label col-4" })
+            <div class="col-8">
+                @Html.TextBoxFor(x => x.Long, new { @class = "form-control" })
+            </div>
+        </div>
+        <button class="btn btn-primary">Shorten your URL!</button>
+    }
+</div>

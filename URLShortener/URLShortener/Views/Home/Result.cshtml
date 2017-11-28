@@ -1,1 +1,12 @@
 ﻿@model URLShortener.Models.Link
+    Result
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+<div class="container">
+    <div class="form-group row">
+        @Html.LabelFor(x => x.Short, new { @class = "col-form-label col-4" })
+        <div class="col-8">
+            @ViewBag.Message
+        </div>
+    </div>
+    <a class="btn btn-primary btn-sm" href="@Url.Action("Index")"><i class="fa fa-home"></i> Main Page</a>
+</div>
