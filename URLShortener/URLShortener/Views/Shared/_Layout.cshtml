@@ -10,7 +10,20 @@
 </head>
 <body>
     <main>
-        @RenderBody()
-    </main>
+        <div class="container">
+            <h1 align="center">URL Shortener</h1>
+            <nav class="navbar navbar-dark bg-dark">
+                <a class="navbar-brand" href="https://github.com/Frothor" target="_blank"><i class="fa fa-github"></i> My GitHub</a>
+                <div>
+                    <ul>
+                        <li class="nav-item active">
+                            <a class="nav-link" href="/Home/Index"><i class="fa fa-home"></i> Home <span class="sr-only">(current)</span></a>
+                        </li>
+                    </ul>
+                </div>
+</nav>
+        </div>
+            @RenderBody()
+</main>
 </body>
 </html>
