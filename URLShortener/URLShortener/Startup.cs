@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace URLShortener
 {
@@ -27,10 +29,16 @@ namespace URLShortener
             services.AddDbContext<Context>(optionsBuilder =>
                 optionsBuilder.UseSqlServer(
                     ConfigurationRoot["ConnectionString"]));
+            services.AddScoped<SignInManager<IdentityUser>>();
+            services.AddScoped<UserManager<IdentityUser>>();
+            //integracja z Asp.Net Core Mvc
+            services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<Context>();
+            services.AddScoped<RoleManager<IdentityRole>>();
             services.AddMvc();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -38,6 +46,7 @@ namespace URLShortener
             }
 
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseMvcWithDefaultRoute();
         }
     }

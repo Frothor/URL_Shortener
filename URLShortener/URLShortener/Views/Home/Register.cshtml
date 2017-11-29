@@ -1,0 +1,51 @@
+﻿@model URLShortener.ViewModels.RegisterViewModel
+<div class="container">
+    <div class="main-login main-center">
+        @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+        {
+            <div class="form-group">
+                @Html.LabelFor(x => x.Login, new { @class = "cols-sm-2 control-label" })
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+                        @Html.TextBoxFor(x => x.Login, new { @class = "form-control", placeholder = "Enter your Login" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Email, new { @class = "cols-sm-2 control-label" })
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                        @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Enter your Email" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Password, new { @class = "cols-sm-2 control-label" })
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                        @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Enter your Password" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.RepeatPassword, "Confirm Password", new { @class = "cols-sm-2 control-label" })
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                        @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Confirm your Password" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group ">
+                <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+            </div>
+            @*<div class="login-register">
+                    <a href="index.php">Login</a>
+                </div>*@
+
+        }
+    </div>
+</div>

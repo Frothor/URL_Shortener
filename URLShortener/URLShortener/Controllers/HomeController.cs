@@ -5,11 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using URLShortener.Helpers;
 using URLShortener.Models;
+using Microsoft.AspNetCore.Identity;
+using URLShortener.ViewModels;
 
 namespace URLShortener.Controllers
 {
     public class HomeController : Controller
     {
+        protected UserManager<IdentityUser> UserManager { get; }
+        public HomeController(UserManager<IdentityUser> userManager)
+        {
+            UserManager = userManager;
+        }
+
         [Route("/{link}")]
         public IActionResult ShortLink(string link, [FromServices] Context context)
         {
@@ -57,6 +65,37 @@ namespace URLShortener.Controllers
             }
             
             return View("Index", link);
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new IdentityUser(registerViewModel.Login);
+                user.Email = registerViewModel.Email;
+                IdentityResult identityResult = await UserManager.CreateAsync(user, registerViewModel.Password);
+                if (identityResult.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    foreach (var item in identityResult.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+
+                }
+
+            }
+            return View(registerViewModel);
         }
     }
 }
