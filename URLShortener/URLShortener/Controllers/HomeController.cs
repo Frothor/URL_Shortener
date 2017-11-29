@@ -21,6 +21,8 @@ namespace URLShortener.Controllers
             else
             {
                 var originalLink = linkFound.Long;
+                linkFound.NumberOfClicks += 1;
+                context.SaveChanges();
                 return Redirect(originalLink);
             }
 
@@ -40,6 +42,7 @@ namespace URLShortener.Controllers
 
                 if (linkIsInDatabase == null)
                 {
+                    link.NumberOfClicks = 0;
                     link.Short = Shortener.Hash(link.Long);
                     context.Links.Add(link);
                     context.SaveChanges();

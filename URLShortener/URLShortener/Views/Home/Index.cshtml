@@ -7,9 +7,7 @@
     {
         <div>
             <div class="form-group">
-                @Html.LabelFor(x => x.Long, "Enter URL :", new { @class = "form-control" })
-          
-                @Html.TextBoxFor(x => x.Long, new { @class = "form-control", placeholder = "URL" })
+                @Html.TextBoxFor(x => x.Long, new { @class = "form-control", placeholder = "Paste in link you want to shorten." })
             </div>
         </div>
         <button class="btn btn-primary">Shorten your URL!</button>

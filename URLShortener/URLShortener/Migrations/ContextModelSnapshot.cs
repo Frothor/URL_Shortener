@@ -28,6 +28,8 @@ namespace URLShortener.Migrations
                     b.Property<string>("Long")
                         .IsRequired();
 
+                    b.Property<long>("NumberOfClicks");
+
                     b.Property<string>("Short");
 
                     b.HasKey("Id");

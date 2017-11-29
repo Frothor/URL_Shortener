@@ -19,11 +19,11 @@ namespace URLShortener.Helpers
                 foreach (byte b in hash)
                 {
                     // can be "x2" if you want lowercase
-                    sb.Append(b.ToString("X2"));
+                    sb.Append(b.ToString("x2"));
                 }
                 string text = sb.ToString();
-                string firstEightChar = text.Substring(0, 8);
-                return firstEightChar.Insert(4, "-");
+                string firstEightChar = text.Substring(0, 6);
+                return firstEightChar;
             }
         }
     }

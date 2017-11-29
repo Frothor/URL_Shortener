@@ -16,5 +16,7 @@ namespace URLShortener.Models
 
 
         public string Short { get; set; }
+
+        public long NumberOfClicks { get; set; }
     }
 }

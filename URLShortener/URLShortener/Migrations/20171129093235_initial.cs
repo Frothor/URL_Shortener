@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace URLShortener.Migrations
 {
-    public partial class Initial : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,6 +16,7 @@ namespace URLShortener.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Long = table.Column<string>(nullable: false),
+                    NumberOfClicks = table.Column<long>(nullable: false),
                     Short = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
