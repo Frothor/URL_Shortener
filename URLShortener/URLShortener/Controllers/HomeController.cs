@@ -12,10 +12,12 @@ namespace URLShortener.Controllers
 {
     public class HomeController : Controller
     {
-        protected UserManager<IdentityUser> UserManager { get; }
-        public HomeController(UserManager<IdentityUser> userManager)
+        protected UserManager<IdentityUser> UserManager;
+        protected SignInManager<IdentityUser> SignInManager;
+        public HomeController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
         {
             UserManager = userManager;
+            SignInManager = signInManager;
         }
 
         [Route("/{link}")]

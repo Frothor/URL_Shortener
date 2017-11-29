@@ -3,6 +3,7 @@
     <div class="main-login main-center">
         @using (Html.BeginForm("Register", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
         {
+            @Html.AntiForgeryToken()
             <div class="form-group">
                 @Html.LabelFor(x => x.Login, new { @class = "cols-sm-2 control-label" })
                 <div class="cols-sm-10">
@@ -10,6 +11,7 @@
                         <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
                         @Html.TextBoxFor(x => x.Login, new { @class = "form-control", placeholder = "Enter your Login" })
                     </div>
+                    <p>@Html.ValidationMessageFor(x => x.Login, "", new { @class = "text-danger" })</p>
                 </div>
             </div>
             <div class="form-group">
@@ -19,6 +21,7 @@
                         <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
                         @Html.TextBoxFor(x => x.Email, new { @class = "form-control", placeholder = "Enter your Email" })
                     </div>
+                    <p>@Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })</p>
                 </div>
             </div>
             <div class="form-group">
@@ -28,6 +31,7 @@
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
                         @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Enter your Password" })
                     </div>
+                    <p>@Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger" })</p>
                 </div>
             </div>
             <div class="form-group">
@@ -35,17 +39,17 @@
                 <div class="cols-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                        @Html.PasswordFor(x => x.Password, new { @class = "form-control", placeholder = "Confirm your Password" })
+                        @Html.PasswordFor(x => x.RepeatPassword, new { @class = "form-control", placeholder = "Confirm your Password" })
                     </div>
+                    <p>@Html.ValidationMessageFor(x => x.Login, "", new { @class = "text-danger" })</p>
                 </div>
             </div>
             <div class="form-group ">
-                <button type="button" class="btn btn-primary btn-lg btn-block login-button">Register</button>
+                <input type="submit" class="btn btn-primary btn-lg btn-block login-button" value="Register" />
             </div>
-            @*<div class="login-register">
-                    <a href="index.php">Login</a>
-                </div>*@
+         
 
         }
     </div>
 </div>
+
