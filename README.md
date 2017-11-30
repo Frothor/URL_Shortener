@@ -8,3 +8,5 @@ App which shortens urls
 - Personalized url done.
 - User connected with links done.
 - Displaying user's urls done.
+- Action remove added.
+- Buttons improved.

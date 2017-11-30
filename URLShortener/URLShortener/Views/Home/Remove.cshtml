@@ -1,0 +1,36 @@
+﻿@model URLShortener.Models.Link
+
+<div class="container">
+    @using (@Html.BeginForm("ConfirmRemove", "Home", new { id = Model.Id }, FormMethod.Post))
+    {
+        <table class="table table-danger table-hover">
+            <tr>
+                <th>
+                    Original URL
+                </th>
+                <th>
+                    Shortened Version
+                </th>
+                <th>
+                    Number Of Enters
+                </th>
+            </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => x.Long)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.Short)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => x.NumberOfClicks)
+                </td>
+            </tr>
+        </table>
+
+        <p>Do you still want to remove?</p>
+        <button class="btn btn-danger">Yes <i class="fa fa-remove"></i></button>
+    }
+
+    <a class="btn btn-primary btn-sm" href="@Url.Action("Index")"><i class="fa fa-home"></i> Main Page</a>
+</div>

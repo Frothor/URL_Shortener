@@ -66,7 +66,7 @@ namespace URLShortener.Controllers
                     return View();
                 }
             }
-            
+
             return View("Index", link);
         }
 
@@ -76,7 +76,7 @@ namespace URLShortener.Controllers
         {
             if (ModelState.IsValid)
             {
-                
+
                 if (string.IsNullOrEmpty(link.Short))
                 {
                     link.NumberOfClicks = 0;
@@ -99,7 +99,7 @@ namespace URLShortener.Controllers
                 }
                 else
                 {
-                    
+
                     var linkIsInDatabase = context.Links.SingleOrDefault(x => x.Short == link.Short);
                     if (linkIsInDatabase == null)
                     {
@@ -115,7 +115,7 @@ namespace URLShortener.Controllers
                         return View();
                     }
                 }
-                
+
             }
 
             return View("Index", link);
@@ -124,10 +124,29 @@ namespace URLShortener.Controllers
         public IActionResult ShowLinks(Link link, [FromServices] Context context)
         {
             var links = context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.ToList();
-            //context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.Add(link);
             return View(links);
         }
 
+        [HttpGet]
+        public IActionResult Remove(int id, [FromServices] Context context)
+        {
+            var link = context.Links.Single(x => x.Id == id);
+            return View(link);
+        }
+
+        [HttpPost]
+        public IActionResult ConfirmRemove(int id, [FromServices] Context context)
+        {
+
+            var link = context.Links.Single(x => x.Id == id);
+            context.Remove(link);
+            context.SaveChanges();
+            return RedirectToAction("Index");
+
+        }
+
+        //=======================================================
+        //Account
         [HttpGet]
         public IActionResult Register()
         {
