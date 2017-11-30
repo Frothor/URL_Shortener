@@ -10,3 +10,4 @@ App which shortens urls
 - Displaying user's urls done.
 - Action remove added.
 - Buttons improved.
+- Remove view imroved.

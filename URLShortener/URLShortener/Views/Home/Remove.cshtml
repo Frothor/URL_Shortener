@@ -27,10 +27,17 @@
                 </td>
             </tr>
         </table>
-
-        <p>Do you still want to remove?</p>
-        <button class="btn btn-danger">Yes <i class="fa fa-remove"></i></button>
+        <div align="center">
+            <div class="col-md-3">
+                <p>Do you still want to remove?</p>
+                <div class="float-left">
+                    <button class="btn btn-success btn-lg">Yes</button>
+                </div>
+                <div class="float-right">
+                    <a class="btn btn-danger btn-lg" href="@Url.Action("ShowLinks")" >No</a>
+                </div>
+            </div>
+        </div>
+        
     }
-
-    <a class="btn btn-primary btn-sm" href="@Url.Action("Index")"><i class="fa fa-home"></i> Main Page</a>
 </div>

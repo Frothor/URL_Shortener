@@ -145,74 +145,96 @@ namespace URLShortener.Controllers
 
         }
 
-        //=======================================================
-        //Account
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
+    //    [HttpGet]
+    //    public IActionResult Edit(int id, [FromServices] Context context)
+    //    {
+    //        var link = context.Links.Single(x => x.Id == id);
+    //        return View(link);
+    //    }
 
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = new User();
-                user.UserName = registerViewModel.Login;
-                user.Email = registerViewModel.Email;
-                IdentityResult identityResult = await UserManager.CreateAsync(user, registerViewModel.Password);
-                if (identityResult.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, true);
 
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    foreach (var item in identityResult.Errors)
-                    {
-                        ModelState.AddModelError("", item.Description);
-                    }
+    //    [HttpPost]
+    //    public IActionResult Edit(Link link, [FromServices] Context context)
+    //    {
+    //        if (ModelState.IsValid)
+    //        {
+    //            context.Update(link);
+    //            context.SaveChanges();
+    //            return RedirectToAction("Index");
+    //        }
+    //        return View(link);
 
-                }
+    //    }
+    //}
 
-            }
-            return View(registerViewModel);
-        }
-
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> LogIn(LogInViewModel logInViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var signInResult = await SignInManager.PasswordSignInAsync(logInViewModel.Login, logInViewModel.Password, true, false);
-                if (signInResult.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Login or password incorrect!");
-                }
-            }
-
-            return View(logInViewModel);
-
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> LogOut()
-        {
-            await SignInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-
-        }
+    //=======================================================
+    //Account
+    [HttpGet]
+    public IActionResult Register()
+    {
+        return View();
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = new User();
+            user.UserName = registerViewModel.Login;
+            user.Email = registerViewModel.Email;
+            IdentityResult identityResult = await UserManager.CreateAsync(user, registerViewModel.Password);
+            if (identityResult.Succeeded)
+            {
+                await SignInManager.SignInAsync(user, true);
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                foreach (var item in identityResult.Errors)
+                {
+                    ModelState.AddModelError("", item.Description);
+                }
+
+            }
+
+        }
+        return View(registerViewModel);
+    }
+
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> LogIn(LogInViewModel logInViewModel)
+    {
+        if (ModelState.IsValid)
+        {
+            var signInResult = await SignInManager.PasswordSignInAsync(logInViewModel.Login, logInViewModel.Password, true, false);
+            if (signInResult.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ModelState.AddModelError("", "Login or password incorrect!");
+            }
+        }
+
+        return View(logInViewModel);
+
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> LogOut()
+    {
+        await SignInManager.SignOutAsync();
+        return RedirectToAction("Index", "Home");
+
+    }
+}
 }
