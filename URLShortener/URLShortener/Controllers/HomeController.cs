@@ -69,6 +69,56 @@ namespace URLShortener.Controllers
             return View("Index", link);
         }
 
+        [HttpPost]
+        public IActionResult Personalize(Link link, [FromServices] Context context)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                if (string.IsNullOrEmpty(link.Short))
+                {
+                    link.NumberOfClicks = 0;
+                    var linkIsInDatabase = context.Links.SingleOrDefault(x => x.Long == link.Long);
+
+                    if (linkIsInDatabase == null)
+                    {
+                        link.NumberOfClicks = 0;
+                        link.Short = Shortener.Hash(link.Long);
+                        context.Links.Add(link);
+                        context.SaveChanges();
+                        ViewBag.Message = "http://localhost:59290/" + link.Short;
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Message = "http://localhost:59290/" + linkIsInDatabase.Short;
+                        return View();
+                    }
+                }
+                else
+                {
+                    
+                    var linkIsInDatabase = context.Links.SingleOrDefault(x => x.Short == link.Short);
+                    if (linkIsInDatabase == null)
+                    {
+                        link.NumberOfClicks = 0;
+                        context.Links.Add(link);
+                        context.SaveChanges();
+                        ViewBag.Message = "http://localhost:59290/" + link.Short;
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.Message = "This personalized option is already in use!";
+                        return View();
+                    }
+                }
+                
+            }
+
+            return View("Index", link);
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -104,6 +154,26 @@ namespace URLShortener.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LogIn(LogInViewModel logInViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var signInResult = await SignInManager.PasswordSignInAsync(logInViewModel.Login, logInViewModel.Password, true, false);
+                if (signInResult.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Login or password incorrect! ");
+                }
+            }
+
+            return View(logInViewModel);
+
         }
 
         [HttpGet]
