@@ -27,19 +27,64 @@
                             <li class="nav-item active">
                                 <a class="nav-link" href="/Home/Index"><i class="fa fa-home"></i> Home <span class="sr-only">(current)</span></a>
                             </li>
-                            @*<li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>*@
+                            <li class="nav-item">
+                                    <a class="nav-link" href="/Home/ShowLinks">Your links</a>
+                                </li>
                         </ul>
-                        @using (Html.BeginForm("Register", "Home", FormMethod.Get))
+
+                        @if (User.Identity.IsAuthenticated)
                         {
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Register</button>
+                            <a href="/Home/LogOut" class="btn btn-outline-primary my-2 my-sm-0" role="button">Logout</a>
+
+
                         }
+                        else
+                        {
+
+                            <a href="/Home/Register" class="btn btn-outline-primary my-2 my-sm-0" role="button">Register</a>
+
+
+                            <a href="/Home/Login" class="btn btn-outline-primary my-2 my-sm-0" role="button">Login</a>
+                       
+
+
+
+
+                        }
+                        @*@if (User.Identity.IsAuthenticated)
+                            {
+                                <div>
+                                    @using (Html.BeginForm("LogOut", "Home", FormMethod.Get))
+                                    {
+                                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Logout</button>
+                                    }
+                                </div>
+
+                            }
+                            else
+                            {
+                                <div id="spacer">
+                                    @using (Html.BeginForm("Register", "Home", FormMethod.Get))
+                                    {
+                                        <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Register</button>
+                                    }
+                                </div>
+                               <div>
+                                   @using (Html.BeginForm("Login", "Home", FormMethod.Get))
+                                   {
+                                       <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Login</button>
+                                   }
+                               </div>
+
+
+
+                            }*@
+
                     </div>
-                </div>
+            </div>
             </nav>
-        </div>
+            </div>
             @RenderBody()
-</main>
-</body>
+        </main>
+    </body>
 </html>

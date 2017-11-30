@@ -70,6 +70,7 @@ namespace URLShortener.Controllers
             return View("Index", link);
         }
 
+
         [HttpPost]
         public IActionResult Personalize(Link link, [FromServices] Context context)
         {
@@ -118,6 +119,13 @@ namespace URLShortener.Controllers
             }
 
             return View("Index", link);
+        }
+
+        public IActionResult ShowLinks(Link link, [FromServices] Context context)
+        {
+            var links = context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.ToList();
+            //context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.Add(link);
+            return View(links);
         }
 
         [HttpGet]
@@ -172,7 +180,7 @@ namespace URLShortener.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Login or password incorrect! ");
+                    ModelState.AddModelError("", "Login or password incorrect!");
                 }
             }
 

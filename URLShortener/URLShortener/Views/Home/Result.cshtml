@@ -7,9 +7,20 @@
                 <td class="table-success">
                     Shortened link:
                 </td>
-                <td class="table-success">
-                    @ViewBag.Message
-                </td>
+                
+                    @if (ViewBag.Message == "Login or password incorrect!")
+                    {
+                        <td class="table-danger">
+                            @ViewBag.Message
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="table-success">
+                            @ViewBag.Message
+                        </td>
+                    }
+
             </tr>
          </table>
      </div>

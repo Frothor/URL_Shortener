@@ -1,0 +1,40 @@
+﻿@model List<URLShortener.Models.Link>
+<div class="container">
+    <div>
+        <table class="table table-hover">
+            <tr>
+                <th>
+                    Original
+                </th>
+                <th>
+                    Shortened Version
+                </th>
+                <th>
+                    Number Of Enters
+                </th>
+                @*<th>
+                    Options
+                </th>*@
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr class="table-info">
+                    <td>
+                        @Html.DisplayFor(x => item.Long)
+                    </td>
+                    <td>
+                        http://localhost:59290/@Html.DisplayFor(x => item.Short)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => item.NumberOfClicks)
+                    </td>
+                    @*<td>
+                        <a class="btn btn-warning btn-sm" href="@Url.Action("Remove", new { id = item.ID })">Remove <i class="fa fa-remove"></i></a>
+                    </td>*@
+                </tr>
+            }
+        </table>
+        <br />
+        <a class="btn btn-success btn-sm" href="@Url.Action("Index")"><i class="fa fa-plus"></i> Add Link</a>
+    </div>
+</div>

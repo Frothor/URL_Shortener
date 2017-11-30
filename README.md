@@ -7,3 +7,4 @@ App which shortens urls
 - Login view and basic acton added.
 - Personalized url done.
 - User connected with links done.
+- Displaying user's urls done.

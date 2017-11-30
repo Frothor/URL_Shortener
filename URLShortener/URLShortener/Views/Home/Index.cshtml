@@ -2,17 +2,20 @@
 
 
 <div class="container">
-
     @if (User.Identity.IsAuthenticated)
     {
-        @Html.ActionLink("Log Out", "LogOut", "Home")
+
+
         <p>You are logged in. Personalize your URL:</p>
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
         @using (Html.BeginForm("Personalize", "Home", FormMethod.Post, new { @class = "form-group" }))
         {
             <div>
                 <div class="form-group">
                     @Html.TextBoxFor(x => x.Long, new { @class = "form-control", placeholder = "Paste in link you want to shorten." })
+                </div>
+                <div>
+                    <p>@Html.ValidationMessageFor(x => x.Long, "", new { @class = "text-danger" })</p>
                 </div>
                 <div class="form-group">
                     @Html.TextBoxFor(x => x.Short, new { @class = "form-control", placeholder = "Enter your personalized choice." })
@@ -24,23 +27,20 @@
     }
     else
     {
-        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         @using (Html.BeginForm("Result", "Home", FormMethod.Post, new { @class = "form-group" }))
         {
             <div class="input-group">
-
                 @Html.TextBoxFor(x => x.Long, new { @class = "form-control", placeholder = "Paste in link you want to shorten." })
                 <span class="input-group-btn">
                     <button class="btn btn-primary">Shorten your URL!</button>
                 </span>
             </div>
+            <p>@Html.ValidationMessageFor(x => x.Long, "", new { @class = "text-danger" })</p>
 
         }
         <p>You are not logged in.</p>
         <p>Please login to personalize your URL!</p>
-        @Html.ActionLink("Register", "Register", "Home")
-        @Html.ActionLink("Login", "Login", "Home")
     }
-    
+
 </div>
 
