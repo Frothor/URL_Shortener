@@ -19,3 +19,20 @@
 nav{
     margin-bottom: 50px;
 }
+
+.login-register {
+    font-size: 11px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    margin-bottom: 15px;
+}
+
+.login-button {
+    margin-top: 5px;
+}

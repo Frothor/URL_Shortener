@@ -99,5 +99,19 @@ namespace URLShortener.Controllers
             }
             return View(registerViewModel);
         }
+
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await SignInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+
+        }
     }
 }
