@@ -6,3 +6,4 @@ App which shortens urls
 - Registration form working fine (at last!).
 - Login view and basic acton added.
 - Personalized url done.
+- User connected with links done.

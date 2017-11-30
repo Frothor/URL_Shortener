@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using URLShortener.Models;
 
 namespace URLShortener
 {
@@ -29,12 +30,12 @@ namespace URLShortener
             services.AddDbContext<Context>(optionsBuilder =>
                 optionsBuilder.UseSqlServer(
                     ConfigurationRoot["ConnectionString"]));
-            services.AddScoped<SignInManager<IdentityUser>>();
-            services.AddScoped<UserManager<IdentityUser>>();
+            services.AddScoped<SignInManager<User>>();
+            services.AddScoped<UserManager<User>>();
             //integracja z Asp.Net Core Mvc
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole<int>>()
             .AddEntityFrameworkStores<Context>();
-            services.AddScoped<RoleManager<IdentityRole>>();
+            services.AddScoped<RoleManager<IdentityRole<int>>>();
             services.AddMvc();
         }
 

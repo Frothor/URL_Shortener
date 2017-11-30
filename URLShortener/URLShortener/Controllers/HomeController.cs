@@ -7,14 +7,15 @@ using URLShortener.Helpers;
 using URLShortener.Models;
 using Microsoft.AspNetCore.Identity;
 using URLShortener.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace URLShortener.Controllers
 {
     public class HomeController : Controller
     {
-        protected UserManager<IdentityUser> UserManager;
-        protected SignInManager<IdentityUser> SignInManager;
-        public HomeController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        protected UserManager<User> UserManager;
+        protected SignInManager<User> SignInManager;
+        public HomeController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -84,7 +85,7 @@ namespace URLShortener.Controllers
                     {
                         link.NumberOfClicks = 0;
                         link.Short = Shortener.Hash(link.Long);
-                        context.Links.Add(link);
+                        context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.Add(link);
                         context.SaveChanges();
                         ViewBag.Message = "http://localhost:59290/" + link.Short;
                         return View();
@@ -102,7 +103,7 @@ namespace URLShortener.Controllers
                     if (linkIsInDatabase == null)
                     {
                         link.NumberOfClicks = 0;
-                        context.Links.Add(link);
+                        context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.Add(link);
                         context.SaveChanges();
                         ViewBag.Message = "http://localhost:59290/" + link.Short;
                         return View();
@@ -130,11 +131,14 @@ namespace URLShortener.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser(registerViewModel.Login);
+                var user = new User();
+                user.UserName = registerViewModel.Login;
                 user.Email = registerViewModel.Email;
                 IdentityResult identityResult = await UserManager.CreateAsync(user, registerViewModel.Password);
                 if (identityResult.Succeeded)
                 {
+                    await SignInManager.SignInAsync(user, true);
+
                     return RedirectToAction("Index", "Home");
                 }
                 else
