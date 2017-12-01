@@ -39,6 +39,11 @@ namespace URLShortener.Controllers
 
         }
 
+        public IActionResult Feature()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -141,7 +146,7 @@ namespace URLShortener.Controllers
             var link = context.Links.Single(x => x.Id == id);
             context.Remove(link);
             context.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ShowLinks");
 
         }
 
