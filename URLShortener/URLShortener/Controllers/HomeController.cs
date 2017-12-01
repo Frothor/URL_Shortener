@@ -154,87 +154,115 @@ namespace URLShortener.Controllers
 
 
         [HttpPost]
-        public IActionResult Edit(Link link, [FromServices] Context context)
+        public IActionResult Edit(int id, string @short, [FromServices] Context context)
+        {
+
+            if (string.IsNullOrEmpty(@short))
+            {
+                Link link = context.Links.Single(x => x.Id == id);
+
+                if (context.Links.Count(x => x.Long == link.Long) == 1)
+                {
+                    link.Short = Shortener.Hash(link.Long);
+                    context.Links.Update(link);
+                    context.SaveChanges();
+                    return RedirectToAction("ShowLinks");
+                }
+                else
+                {
+                    ViewBag.Message = "This shorten form is already in database!";
+                    return View(link);
+                }
+            }
+            else
+            {
+                var linkIsInDatabase = context.Links.SingleOrDefault(x => x.Short == @short);
+
+                if (linkIsInDatabase == null)
+                {
+                    var linkToChange = context.Links.Single(x => x.Id == id);
+                    linkToChange.Short = @short;
+                    context.Links.Update(linkToChange);
+                    context.SaveChanges();
+                    return RedirectToAction("ShowLinks");
+                }
+                else
+                {
+                    ViewBag.Message = "This shorten form is already in database!";
+                    return View();
+                }
+            }
+        }
+
+
+        //=======================================================
+        //Account
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
             if (ModelState.IsValid)
             {
-                context.Update(link);
-                context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(link);
-
-        }
-    
-
-    //=======================================================
-    //Account
-    [HttpGet]
-    public IActionResult Register()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
-    {
-        if (ModelState.IsValid)
-        {
-            var user = new User();
-            user.UserName = registerViewModel.Login;
-            user.Email = registerViewModel.Email;
-            IdentityResult identityResult = await UserManager.CreateAsync(user, registerViewModel.Password);
-            if (identityResult.Succeeded)
-            {
-                await SignInManager.SignInAsync(user, true);
-
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                foreach (var item in identityResult.Errors)
+                var user = new User();
+                user.UserName = registerViewModel.Login;
+                user.Email = registerViewModel.Email;
+                IdentityResult identityResult = await UserManager.CreateAsync(user, registerViewModel.Password);
+                if (identityResult.Succeeded)
                 {
-                    ModelState.AddModelError("", item.Description);
+                    await SignInManager.SignInAsync(user, true);
+
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    foreach (var item in identityResult.Errors)
+                    {
+                        ModelState.AddModelError("", item.Description);
+                    }
+
                 }
 
             }
-
+            return View(registerViewModel);
         }
-        return View(registerViewModel);
-    }
 
-    [HttpGet]
-    public IActionResult Login()
-    {
-        return View();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> LogIn(LogInViewModel logInViewModel)
-    {
-        if (ModelState.IsValid)
+        [HttpGet]
+        public IActionResult Login()
         {
-            var signInResult = await SignInManager.PasswordSignInAsync(logInViewModel.Login, logInViewModel.Password, true, false);
-            if (signInResult.Succeeded)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            else
-            {
-                ModelState.AddModelError("", "Login or password incorrect!");
-            }
+            return View();
         }
 
-        return View(logInViewModel);
+        [HttpPost]
+        public async Task<IActionResult> LogIn(LogInViewModel logInViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var signInResult = await SignInManager.PasswordSignInAsync(logInViewModel.Login, logInViewModel.Password, true, false);
+                if (signInResult.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Login or password incorrect!");
+                }
+            }
 
+            return View(logInViewModel);
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> LogOut()
+        {
+            await SignInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+
+        }
     }
-
-    [HttpGet]
-    public async Task<IActionResult> LogOut()
-    {
-        await SignInManager.SignOutAsync();
-        return RedirectToAction("Index", "Home");
-
-    }
-}
 }

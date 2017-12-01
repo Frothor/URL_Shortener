@@ -1,18 +1,12 @@
 ﻿@model URLShortener.Models.Link
 
 <div class="container">
+    @ViewBag.Message
     <div class="row">
         <div class="col-8">
-            <h3>Update form</h3>
             @using (Html.BeginForm("Edit", "Home", FormMethod.Post))
             {
-                <div class="form-group row">
-                    @Html.LabelFor(x => x.Id, new { @class = "col-form-label col-4" })
-                    <div class="col-8">
-                        @Html.TextBoxFor(x => x.Id, new { @class = "form-control", disabled = "" })
-                    </div>
-                </div>
-
+                @Html.HiddenFor(x => x.Id)
                 <div class="form-group row">
                     @Html.LabelFor(x => x.Long, "Original URL", new { @class = "col-form-label col-4" })
                     <div class="col-8">
