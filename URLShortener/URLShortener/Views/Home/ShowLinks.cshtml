@@ -25,10 +25,11 @@
                     <td>
                         http://localhost:59290/@Html.DisplayFor(x => item.Short)
                     </td>
-                    <td>
+                    <td align="center">
                         @Html.DisplayFor(x => item.NumberOfClicks)
                     </td>
                     <td>
+                        <a class="btn btn-outline-info btn-sm" href="@Url.Action("Edit", new { id = item.Id })">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                         <a class="btn btn-outline-danger btn-sm" href="@Url.Action("Remove", new { id = item.Id })">Remove <i class="fa fa-remove"></i></a>
                     </td>
                 </tr>

@@ -145,27 +145,27 @@ namespace URLShortener.Controllers
 
         }
 
-    //    [HttpGet]
-    //    public IActionResult Edit(int id, [FromServices] Context context)
-    //    {
-    //        var link = context.Links.Single(x => x.Id == id);
-    //        return View(link);
-    //    }
+        [HttpGet]
+        public IActionResult Edit(int id, [FromServices] Context context)
+        {
+            var link = context.Links.Single(x => x.Id == id);
+            return View(link);
+        }
 
 
-    //    [HttpPost]
-    //    public IActionResult Edit(Link link, [FromServices] Context context)
-    //    {
-    //        if (ModelState.IsValid)
-    //        {
-    //            context.Update(link);
-    //            context.SaveChanges();
-    //            return RedirectToAction("Index");
-    //        }
-    //        return View(link);
+        [HttpPost]
+        public IActionResult Edit(Link link, [FromServices] Context context)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Update(link);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(link);
 
-    //    }
-    //}
+        }
+    
 
     //=======================================================
     //Account

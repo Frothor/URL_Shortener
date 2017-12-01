@@ -11,3 +11,4 @@ App which shortens urls
 - Action remove added.
 - Buttons improved.
 - Remove view imroved.
+- Edit added without proper logic.
