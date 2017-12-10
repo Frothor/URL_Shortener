@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace URLShortener.Migrations
 {
-    public partial class initial : Migration
+    public partial class _001 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

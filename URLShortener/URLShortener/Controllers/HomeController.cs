@@ -13,18 +13,21 @@ namespace URLShortener.Controllers
 {
     public class HomeController : Controller
     {
+        protected Context Context { get;}
         protected UserManager<User> UserManager;
         protected SignInManager<User> SignInManager;
-        public HomeController(UserManager<User> userManager, SignInManager<User> signInManager)
+
+        public HomeController(Context context, UserManager<User> userManager, SignInManager<User> signInManager)
         {
+            Context = context;
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
         [Route("/{link}")]
-        public IActionResult ShortLink(string link, [FromServices] Context context)
+        public IActionResult ShortLink(string link)
         {
-            var linkFound = context.Links.SingleOrDefault(x => x.Short == link);
+            var linkFound = Context.Links.SingleOrDefault(x => x.Short == link);
             if (linkFound == null)
             {
                 return NotFound();
@@ -33,15 +36,10 @@ namespace URLShortener.Controllers
             {
                 var originalLink = linkFound.Long;
                 linkFound.NumberOfClicks += 1;
-                context.SaveChanges();
+                Context.SaveChanges();
                 return Redirect(originalLink);
             }
 
-        }
-
-        public IActionResult Feature()
-        {
-            return View();
         }
 
         public IActionResult Index()
@@ -50,18 +48,18 @@ namespace URLShortener.Controllers
         }
 
         [HttpPost]
-        public IActionResult Result(Link link, [FromServices] Context context)
+        public IActionResult Result(Link link)
         {
             if (ModelState.IsValid)
             {
-                var linkIsInDatabase = context.Links.SingleOrDefault(x => x.Long == link.Long);
+                var linkIsInDatabase = Context.Links.SingleOrDefault(x => x.Long == link.Long);
 
                 if (linkIsInDatabase == null)
                 {
                     link.NumberOfClicks = 0;
                     link.Short = Shortener.Hash(link.Long);
-                    context.Links.Add(link);
-                    context.SaveChanges();
+                    Context.Links.Add(link);
+                    Context.SaveChanges();
                     ViewBag.Message = "http://localhost:59290/" + link.Short;
                     return View();
                 }
@@ -77,7 +75,7 @@ namespace URLShortener.Controllers
 
 
         [HttpPost]
-        public IActionResult Personalize(Link link, [FromServices] Context context)
+        public IActionResult Personalize(Link link)
         {
             if (ModelState.IsValid)
             {
@@ -85,14 +83,14 @@ namespace URLShortener.Controllers
                 if (string.IsNullOrEmpty(link.Short))
                 {
                     link.NumberOfClicks = 0;
-                    var linkIsInDatabase = context.Links.SingleOrDefault(x => x.Long == link.Long);
+                    var linkIsInDatabase = Context.Links.SingleOrDefault(x => x.Long == link.Long);
 
                     if (linkIsInDatabase == null)
                     {
                         link.NumberOfClicks = 0;
                         link.Short = Shortener.Hash(link.Long);
-                        context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.Add(link);
-                        context.SaveChanges();
+                        Context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.Add(link);
+                        Context.SaveChanges();
                         ViewBag.Message = "http://localhost:59290/" + link.Short;
                         return View();
                     }
@@ -105,12 +103,12 @@ namespace URLShortener.Controllers
                 else
                 {
 
-                    var linkIsInDatabase = context.Links.SingleOrDefault(x => x.Short == link.Short);
+                    var linkIsInDatabase = Context.Links.SingleOrDefault(x => x.Short == link.Short);
                     if (linkIsInDatabase == null)
                     {
                         link.NumberOfClicks = 0;
-                        context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.Add(link);
-                        context.SaveChanges();
+                        Context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.Add(link);
+                        Context.SaveChanges();
                         ViewBag.Message = "http://localhost:59290/" + link.Short;
                         return View();
                     }
@@ -126,51 +124,51 @@ namespace URLShortener.Controllers
             return View("Index", link);
         }
 
-        public IActionResult ShowLinks(Link link, [FromServices] Context context)
+        public IActionResult ShowLinks(Link link)
         {
-            var links = context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.ToList();
+            var links = Context.Users.Include(x => x.Links).Single(x => x.UserName == User.Identity.Name).Links.ToList();
             return View(links);
         }
 
         [HttpGet]
-        public IActionResult Remove(int id, [FromServices] Context context)
+        public IActionResult Remove(int id)
         {
-            var link = context.Links.Single(x => x.Id == id);
+            var link = Context.Links.Single(x => x.Id == id);
             return View(link);
         }
 
         [HttpPost]
-        public IActionResult ConfirmRemove(int id, [FromServices] Context context)
+        public IActionResult ConfirmRemove(int id)
         {
 
-            var link = context.Links.Single(x => x.Id == id);
-            context.Remove(link);
-            context.SaveChanges();
+            var link = Context.Links.Single(x => x.Id == id);
+            Context.Remove(link);
+            Context.SaveChanges();
             return RedirectToAction("ShowLinks");
 
         }
 
         [HttpGet]
-        public IActionResult Edit(int id, [FromServices] Context context)
+        public IActionResult Edit(int id)
         {
-            var link = context.Links.Single(x => x.Id == id);
+            var link = Context.Links.Single(x => x.Id == id);
             return View(link);
         }
 
 
         [HttpPost]
-        public IActionResult Edit(int id, string @short, [FromServices] Context context)
+        public IActionResult Edit(int id, string @short)
         {
 
             if (string.IsNullOrEmpty(@short))
             {
-                Link link = context.Links.Single(x => x.Id == id);
+                Link link = Context.Links.Single(x => x.Id == id);
 
-                if (context.Links.Count(x => x.Long == link.Long) == 1)
+                if (Context.Links.Count(x => x.Long == link.Long) == 1)
                 {
                     link.Short = Shortener.Hash(link.Long);
-                    context.Links.Update(link);
-                    context.SaveChanges();
+                    Context.Links.Update(link);
+                    Context.SaveChanges();
                     return RedirectToAction("ShowLinks");
                 }
                 else
@@ -181,14 +179,14 @@ namespace URLShortener.Controllers
             }
             else
             {
-                var linkIsInDatabase = context.Links.SingleOrDefault(x => x.Short == @short);
+                var linkIsInDatabase = Context.Links.SingleOrDefault(x => x.Short == @short);
 
                 if (linkIsInDatabase == null)
                 {
-                    var linkToChange = context.Links.Single(x => x.Id == id);
+                    var linkToChange = Context.Links.Single(x => x.Id == id);
                     linkToChange.Short = @short;
-                    context.Links.Update(linkToChange);
-                    context.SaveChanges();
+                    Context.Links.Update(linkToChange);
+                    Context.SaveChanges();
                     return RedirectToAction("ShowLinks");
                 }
                 else

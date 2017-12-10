@@ -11,8 +11,8 @@ using URLShortener;
 namespace URLShortener.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20171130113605_initial")]
-    partial class initial
+    [Migration("20171201133939_001")]
+    partial class _001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
